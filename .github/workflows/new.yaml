@@ -23,7 +23,7 @@ env:
 jobs:
 
   ecr_details:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
       ecr_username: ${{steps.ecr_details.outputs.username}}
       ecr_token: ${{steps.ecr_details.outputs.token}}
@@ -47,7 +47,7 @@ jobs:
           echo "region=${{fromJSON(steps.parseToken.outputs.DECODED_TOKEN).region}}" >> "$GITHUB_OUTPUT"
           echo "registry_id=${{fromJSON(steps.parseToken.outputs.DECODED_TOKEN).registry_id}}" >> "$GITHUB_OUTPUT"
   create_scan:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
       scan_id: ${{steps.parseResponse.outputs.scan_id}}
     steps:
@@ -62,7 +62,7 @@ jobs:
         id: parseResponse
         run: echo "scan_id=${{fromJSON(steps.createScan.outputs.response).data.scan_id}}" >> "$GITHUB_OUTPUT"
   run_scan:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [ecr_details, create_scan]
     outputs:
       container_id: ${{steps.pullImage.outputs.container_id}}
